@@ -13,19 +13,22 @@
 The complete YOLOv11 hair cell dataset can be downloaded from:
 **[Download YOLO_11_Data_Model.zip](https://www.dropbox.com/scl/fi/hngd0d21nhvet70sxkkcz/YOLO_11_Data_Model.zip?rlkey=jyy134cxwyu549encdlwiueho&st=xc0kah4h&dl=0)**
 
+**What's included in the download:**
+- `output_320.zip` - Complete dataset with images and labels
+- `best.pt` - Pre-trained YOLOv11 model
+
 ### Dataset Structure
 The dataset contains:
 - **Hair Cell Images**: High-resolution microscopy images of cochlear hair cells
-- **YOLO Annotations**: Bounding box annotations for 5 classes of hair cells
+- **YOLO Annotations**: Bounding box annotations for 4 classes of hair cells
 - **Training/Test Split**: Pre-organized training and test sets
 
 ### Classes
-The dataset includes 5 classes of hair cells:
+The dataset includes 4 classes of hair cells:
 1. **IHC**: Inner Hair Cells
 2. **OHC-1**: Outer Hair Cells Row 1
 3. **OHC-2**: Outer Hair Cells Row 2
 4. **OHC-3**: Outer Hair Cells Row 3
-5. **OHC-4**: Outer Hair Cells Row 4
 
 ---
 
@@ -34,8 +37,8 @@ The dataset includes 5 classes of hair cells:
 ```
 GANs-YOLO-HC/
 ├── src/
-│   ├── GANs_Hair_Cell.ipynb         # GANs-based hair cell segmentation notebook
-│   └── Yolo12_HC_training.ipynb     # YOLOv11/YOLOv12 training notebook
+│   ├── GANs_Hair_Cell.ipynb                      # GANs-based hair cell segmentation notebook
+│   └── YOLO_v11_Cochlear_Hair_Cell_Detection.ipynb # YOLOv11 training notebook
 ├── scripts/                         # Python scripts for training and inference
 │   ├── train_yolo.py                # YOLOv11 training script
 │   ├── inference_yolo.py            # Inference and prediction script
@@ -75,15 +78,18 @@ pip install -r requirements.txt
 ```
 
 ### 2. Dataset Setup
-1. **Download the dataset** from the link above
+1. **Download the dataset** from the link above: `YOLO_11_Data_Model.zip`
 2. **Extract the files** using your preferred tool (WinRAR, 7-Zip, etc.)
-3. **Copy the dataset** to your project:
+3. **Extract the dataset** and **copy files** to your project:
    ```bash
-   # Copy the extracted output_320 folder to your project
-   cp -r /path/to/extracted/YOLO_10/output_320 data/
+   # Create directories
+   mkdir -p data models
    
-   # Copy the pre-trained model (optional)
-   cp /path/to/extracted/YOLO_10/best.pt models/
+   # Extract the output_320.zip file from the downloaded package
+   unzip /path/to/extracted/YOLO_11_Data_Model/output_320.zip -d data/
+   
+   # Copy the pre-trained model
+   cp /path/to/extracted/YOLO_11_Data_Model/best.pt models/
    ```
 
 ### 3. Training and Inference
@@ -102,6 +108,10 @@ python scripts/visualize_results.py --model runs/train/yolov11_hair_cells/weight
 ```bash
 # Start Jupyter and explore the notebooks in src/
 jupyter notebook
+
+# Available notebooks:
+# - YOLO_v11_Cochlear_Hair_Cell_Detection.ipynb for YOLOv11 training and inference
+# - GANs_Hair_Cell.ipynb for GANs-based hair cell segmentation
 ```
 
 ---
@@ -125,16 +135,16 @@ python -c "from ultralytics import YOLO; print('YOLO installed successfully')"
 ### 2. Dataset Setup
 1. **Download the dataset** from the Dropbox link above
 2. **Extract the files** using WinRAR, 7-Zip, or similar tool
-3. **Copy the dataset** to your project directory:
+3. **Setup the dataset** in your project directory:
    ```bash
    # Create directories
    mkdir -p data models
    
-   # Copy the extracted dataset
-   cp -r /path/to/extracted/YOLO_10/output_320 data/
+   # Extract the output_320.zip file from the downloaded package
+   unzip /path/to/extracted/YOLO_11_Data_Model/output_320.zip -d data/
    
-   # Copy pre-trained model (optional)
-   cp /path/to/extracted/YOLO_10/best.pt models/
+   # Copy the pre-trained model
+   cp /path/to/extracted/YOLO_11_Data_Model/best.pt models/
    ```
 
 The dataset structure should look like:
@@ -154,12 +164,16 @@ data/output_320/
 
 ## Example: Setting Up with Downloaded Dataset
 
-Here's what your directory should look like after copying the dataset:
+After downloading and extracting `YOLO_11_Data_Model.zip`, you'll find:
+- `output_320.zip` (dataset archive)
+- `best.pt` (pre-trained model)
+
+Here's what your directory should look like after following the setup steps:
 
 ```
 GANs-YOLO-HC/
 ├── data/
-│   └── output_320/
+│   └── output_320/                  # Extracted from output_320.zip
 │       ├── images/
 │       │   ├── Train/
 │       │   │   ├── tile_Dnm3KO_P21_mid_20x_tile_5-5_1280_3840_1600_4160.png
@@ -179,7 +193,7 @@ GANs-YOLO-HC/
 │       ├── config.yaml
 │       └── classes.txt
 ├── models/
-│   └── best.pt (optional - pre-trained model)
+│   └── best.pt                      # Copied from downloaded package
 └── ... (other project files)
 ```
 
@@ -188,9 +202,9 @@ GANs-YOLO-HC/
 ## Training
 
 ### Option 1: Using Pre-trained Model (Recommended)
-If you copied the `best.pt` file to the `models/` directory:
+The download includes a pre-trained `best.pt` model. After copying it to the `models/` directory:
 ```bash
-# Skip training and use pre-trained model directly
+# Use the pre-trained model directly for inference
 python scripts/inference_yolo.py --model models/best.pt --source data/output_320/images/Test/ --batch
 ```
 
@@ -217,7 +231,7 @@ python scripts/train_yolo.py --epochs 50 --validate
 jupyter notebook
 
 # Navigate to src/ folder and open:
-# - Yolo12_HC_training.ipynb for YOLOv11 training
+# - YOLO_v11_Cochlear_Hair_Cell_Detection.ipynb for YOLOv11 training
 # - GANs_Hair_Cell.ipynb for GANs implementation
 
 # Follow the notebook cells:
@@ -251,7 +265,7 @@ python scripts/inference_yolo.py --model runs/train/yolov11_hair_cells/weights/b
 ```
 
 ### Using Jupyter Notebook
-Open the `Yolo12_HC_training.ipynb` notebook in the `src/` folder and run the inference cells to process images interactively.
+Open the `YOLO_v11_Cochlear_Hair_Cell_Detection.ipynb` notebook in the `src/` folder and run the inference cells to process images interactively.
 
 ---
 
@@ -270,14 +284,13 @@ python scripts/visualize_results.py --model runs/train/yolov11_hair_cells/weight
 ```
 
 ### Using Jupyter Notebook
-The `Yolo12_HC_training.ipynb` notebook in the `src/` folder contains interactive visualization code that:
+The `YOLO_v11_Cochlear_Hair_Cell_Detection.ipynb` notebook in the `src/` folder contains interactive visualization code that:
 - Displays side-by-side comparison of ground truth vs predictions
 - Uses class-specific colors for different hair cell types:
   - **IHC**: White
   - **OHC-1**: Red
   - **OHC-2**: Green
   - **OHC-3**: Blue
-  - **OHC-4**: Yellow
 
 ---
 
@@ -289,8 +302,8 @@ For GAN-based hair cell segmentation, see the notebooks in the `src/` directory:
 # Navigate to GANs notebook
 jupyter notebook src/GANs_Hair_Cell.ipynb
 
-# Alternative training notebook
-jupyter notebook src/Yolo12_HC_training.ipynb
+# Navigate to YOLOv11 training notebook
+jupyter notebook src/YOLO_v11_Cochlear_Hair_Cell_Detection.ipynb
 ```
 
 ---
